@@ -9,11 +9,11 @@ ENV OPENSSL_VERSION openssl-1.1.1b
 ENV OPENSSL_DOWNLOAD_URL https://www.openssl.org/source/$OPENSSL_VERSION.tar.gz
 ENV MYSOFT_DIR /usr/local/mysofts 
 
-# 安装所需的包
-RUN \
-  sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
-  && apk add --update-cache bash \
-  && apk add --no-cache --virtual mypacks \
+# 设置阿里云alpine apk镜像
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
+#安装gcc make等非nginx所需的包，可放入虚拟包中，待nginx编译完成再删除虚拟包，减少镜像文件的大小
+RUN apk add --no-cache --virtual mypacks \
 	gcc \
 	libc-dev \
 	make \
@@ -25,14 +25,12 @@ RUN \
 	libxslt-dev \
 	gd-dev \
 	geoip-dev \
-&& apk add tzdata \
-        && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-        && echo "Asia/Shanghai" > /etc/timezone \
-        && apk del tzdata \
 && apk add --no-cache \
+	#安装第三方模块所需要的lua
 	bash \
 	pcre-dev \
-&& apk del mypacks
+	#安装设置时区的包
+	tzdata 
 
 # 安装nginx
 RUN \
@@ -48,15 +46,17 @@ RUN \
     && tar -zxvf $OPENSSL_VERSION.tar.gz \
 
     # 安装nginx
-    cd /tmp/$NGINX_VERSION \
+    && cd /tmp/$NGINX_VERSION \
     && ./configure --prefix=$MY_SOFTS_DIR/nginx --with-http_v2_module --with-http_stub_status_module --with-http_ssl_module --with-stream --with-openssl=../$OPENSSL_VERSION \
     && make \
-    && make install
+    && make install \
+    # 删除虚拟包 
+    && apk del mypacks \
+    # 删除nginx和openssl安装
+    && rm -rf /tmp/*
 
+COPY nginx.conf $MY_SOFTS_DIR/nginx/conf/nginx.conf
 COPY index.html $MY_SOFTS_DIR/nginx/html/index.html
-
-# 删除nginx和openssl安装包
-RUN rm -rf /tmp/*
 
 # 设置nginx可执行文件到path中
 ENV PATH $MY_SOFTS_DIR/nginx/sbin:$PATH
