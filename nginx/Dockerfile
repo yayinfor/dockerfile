@@ -60,6 +60,7 @@ COPY index.html $MY_SOFTS_DIR/nginx/html/index.html
 
 # 设置nginx可执行文件到path中
 ENV PATH $MY_SOFTS_DIR/nginx/sbin:$PATH
+WORKDIR $MY_SOFTS_DIR/nginx
 
 EXPOSE 80
 
