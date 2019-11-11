@@ -24,8 +24,8 @@ RUN apk add --no-cache --virtual mypacks \
 	gnupg1 \
 	libxslt-dev \
 	gd-dev \
-	geoip-dev \
-&& apk add --no-cache \
+	geoip-dev && \ 
+apk add --no-cache \
 	#安装第三方模块所需要的lua
 	bash \
 	pcre-dev \
@@ -35,25 +35,25 @@ RUN apk add --no-cache --virtual mypacks \
 # 安装nginx
 RUN \
     # 下载nginx安装包
-    mkdir -p $MYSOFT_DIR \
-    && cd /tmp \
-    && wget $NGINX_DOWNLOAD_RUL \
-    && tar -zxvf $NGINX_VERSION.tar.gz \
+    mkdir -p $MYSOFT_DIR && \ 
+    cd /tmp && \  
+    wget $NGINX_DOWNLOAD_RUL && \ 
+    tar -zxvf $NGINX_VERSION.tar.gz && \
 
     # 下载openssl安装包
-    && cd /tmp \
-    && wget $OPENSSL_DOWNLOAD_URL \
-    && tar -zxvf $OPENSSL_VERSION.tar.gz \
+    cd /tmp && \ 
+    wget $OPENSSL_DOWNLOAD_URL && \
+    tar -zxvf $OPENSSL_VERSION.tar.gz && \
 
     # 安装nginx
-    && cd /tmp/$NGINX_VERSION \
-    && ./configure --prefix=$MY_SOFTS_DIR/nginx --with-http_v2_module --with-http_stub_status_module --with-http_ssl_module --with-stream --with-openssl=../$OPENSSL_VERSION \
-    && make \
-    && make install \
+    cd /tmp/$NGINX_VERSION && \
+    ./configure --prefix=$MY_SOFTS_DIR/nginx --with-http_v2_module --with-http_stub_status_module --with-http_ssl_module --with-stream --with-openssl=../$OPENSSL_VERSION && \
+    make && \
+    make install && \
     # 删除虚拟包 
-    && apk del mypacks \
+    apk del mypacks && \
     # 删除nginx和openssl安装
-    && rm -rf /tmp/*
+    rm -rf /tmp/*
 
 COPY nginx.conf $MY_SOFTS_DIR/nginx/conf/nginx.conf
 COPY index.html $MY_SOFTS_DIR/nginx/html/index.html
