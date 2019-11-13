@@ -87,22 +87,21 @@ nginx-epark:v1
 ]
 ```
 
-上面有2个Volume数据卷，
-通过Name为ngx-epark-wwwroot可以看出：
-宿主机目录在：/var/lib/docker/volumes/ngx-epark-wwwroot/_data
-容器目录在：/nignx/html
+上面有2个Volume数据卷，  
+通过Name为ngx-epark-wwwroot可以看出：  
+宿主机目录在：/var/lib/docker/volumes/ngx-epark-wwwroot/_data  
+容器目录在：/nignx/html  
 
-通过Name为ngx-epark-logs可以看出：
-宿主机目录在：/var/lib/docker/volumes/ngx-epark-logs/_data
+通过Name为ngx-epark-logs可以看出：  
+宿主机目录在：/var/lib/docker/volumes/ngx-epark-logs/_data  
 容器目录在：/nginx/logs
 
-部署项目：
-只需要把项目文件拷贝到/var/lib/docker/volumes/ngx-epark-wwwroot/_data即可完成部署，
+#### 部署项目：  
+只需要把项目文件拷贝到/var/lib/docker/volumes/ngx-epark-wwwroot/_data即可完成部署，  
 此时容器目录/nignx/html中也会有最新部署的项目文件
 
-查看日志：
-ls /var/nignx的lib/docker/volumes/ngx-epark-logs/_data即可看到里面有nignx
-的日志文件
+#### 查看日志：  
+ls /var/nignx的lib/docker/volumes/ngx-epark-logs/_data即可看到里面有nignx的日志文件
 
 
 
