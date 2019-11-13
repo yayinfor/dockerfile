@@ -64,14 +64,9 @@ nginx-epark:v1
 
 
 从以上代码我们知道  
-// 该目录存放着nginx web项目文件  
-1. 挂载容器目录/nginx/html对应宿主机数据卷ngx-epark-wwwroot
-
-// 该目录存放着nginx日志文件  
-2. 挂载容器目录/nginx/logs对应宿主机数据卷ngx-epark-logs
-
-// 该目录存放着nginx配置文件  
-3. 挂载容器目录/nginx/conf对应宿主机数据卷ngx-epark-conf 
+1. 挂载容器目录/nginx/html对应宿主机数据卷ngx-epark-wwwroot // 该目录存放着nginx web项目文件  
+2. 挂载容器目录/nginx/logs对应宿主机数据卷ngx-epark-logs // 该目录存放着nginx日志文件  
+3. 挂载容器目录/nginx/conf对应宿主机数据卷ngx-epark-conf // 该目录存放着nginx配置文件 
 ```
 
 执行docker inspect nginx-epark, 从输出内容中找到Mounts信息如下：
