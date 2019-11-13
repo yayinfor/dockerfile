@@ -61,7 +61,7 @@ docker run -d --name nginx-epark -p 80:80 --restart=always \
 --mount src=ngx-epark-logs,dst=/nginx/logs \
 --mount src=ngx-epark-conf,dst=/nginx/conf \
 nginx-epark:v1
-```
+
 
 从以上代码我们知道  
 // 该目录存放着nginx web项目文件  
@@ -72,6 +72,7 @@ nginx-epark:v1
 
 // 该目录存放着nginx配置文件  
 3. 挂载容器目录/nginx/conf对应宿主机数据卷ngx-epark-conf 
+```
 
 执行docker inspect nginx-epark, 从输出内容中找到Mounts信息如下：
 
