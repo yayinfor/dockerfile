@@ -7,5 +7,5 @@ docker run -d --name nginx-epark -p 80:80 --restart=always \
 --mount src=ngx-epark-conf,dst=/nginx/conf \
 nginx-epark:v1
 
-# 
+# 复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
 cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
