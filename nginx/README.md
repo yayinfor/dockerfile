@@ -44,7 +44,7 @@ cd nginx
 // 查看nginx-epark容器
 docker ps
 
-// 浏览器打开http://localhost
+浏览器打开http://localhost
 
 // 如何运行容器请查看当前目录中start-nginx.sh的内容
 ```
