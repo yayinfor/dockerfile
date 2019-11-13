@@ -36,7 +36,7 @@ docker image ls
 
 ### 3. 运行nginx-epark:v1镜像的容器
 ```
-cd nginx
+cd startup-project-ngx
 
 // 运行容器
 ./start-nginx.sh
@@ -61,6 +61,9 @@ docker run -d --name nginx-epark -p 80:80 --restart=always \
 --mount src=ngx-epark-logs,dst=/nginx/logs \
 --mount src=ngx-epark-conf,dst=/nginx/conf \
 nginx-epark:v1
+
+# 部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
+cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
 
 
 从以上代码我们知道  
@@ -108,6 +111,12 @@ nginx-epark:v1
 #### 部署项目：  
 只需要把项目文件拷贝到/var/lib/docker/volumes/ngx-epark-wwwroot/_data即可完成部署，  
 此时容器目录/nignx/html中也会有最新部署的项目文件
+
+可查看start-nginx.sh中如下代码片段，即为部署项目的方式
+```
+部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
+cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
+```
 
 #### 查看日志：  
 ls /var/nignx的lib/docker/volumes/ngx-epark-logs/_data即可看到里面有nignx的日志文件
