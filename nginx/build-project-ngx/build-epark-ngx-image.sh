@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t nginx-epark:v1 -f Dockerfile-epark-ngx .
+docker build -t nginx-epark:v1 -f Dockerfile .
