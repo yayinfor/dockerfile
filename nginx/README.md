@@ -10,6 +10,8 @@ cd build-base-ngx
 
 // 查看构建成功的base-nginx镜像
 docker image ls
+
+// 如何构建镜像可查看当前目录中的Dockerfile文件和./build-base-ngx-image.sh文件的内容
 ```
 
 ### 2. 在base-nginx:v1基础镜像上构建用于某个项目的nginx镜像
@@ -28,6 +30,8 @@ vim nginx.conf
 docker image ls
 
 // nginx-epark和base-nginx不同的地方就是nginx.conf根据项目的需求做了配置
+
+// 如何构建镜像可查看当前目录中的Dockerfile文件和./build-epark-ngx-image.shh文件的内容
 ```
 
 ### 3. 运行nginx-epark:v1镜像的容器
@@ -41,6 +45,8 @@ cd nginx
 docker ps
 
 // 浏览器打开http://localhost
+
+// 如何运行容器请查看当前目录中start-nginx.sh的内容
 ```
 
 ### 4. 部署项目和查看日志
