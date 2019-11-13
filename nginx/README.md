@@ -62,7 +62,7 @@ docker run -d --name nginx-epark -p 80:80 --restart=always \
 --mount src=ngx-epark-conf,dst=/nginx/conf \
 nginx-epark:v1
 
-# 部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
+#部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
 cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
 
 
@@ -114,7 +114,7 @@ cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
 
 可查看start-nginx.sh中如下代码片段，即为部署项目的方式
 ```
-部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
+#部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
 cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
 ```
 
