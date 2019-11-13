@@ -6,3 +6,6 @@ docker run -d --name nginx-epark -p 80:80 --restart=always \
 --mount src=ngx-epark-logs,dst=/nginx/logs \
 --mount src=ngx-epark-conf,dst=/nginx/conf \
 nginx-epark:v1
+
+# 
+cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
