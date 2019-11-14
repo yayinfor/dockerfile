@@ -43,7 +43,7 @@ hello-go:v1
 ```
 
 ### 4. 访问Go应用
-浏览器打开http://localhost:8080/hello，输出内容：Hello World Golang!
+浏览器打开http://localhost:8080/hello, 输出内容：Hello World Golang!
 
 
 
