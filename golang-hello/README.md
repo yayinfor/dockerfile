@@ -14,7 +14,7 @@ WORKDIR /usr/local/apps/hello
 # 把编译好的Go应用main执行文件复制到容器工作目录
 ADD ./main  /usr/local/apps/hello
 
-# 对外暴露容器端口8080
+# 对外暴露Go应用的http服务器端口8080
 EXPOSE 8080
 
 # 运行Go应用
