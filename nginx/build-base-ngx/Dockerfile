@@ -5,11 +5,10 @@ ENV NGINX_VERSION nginx-1.16.0
 ENV NGINX_DOWNLOAD_RUL http://nginx.org/download/$NGINX_VERSION.tar.gz
 
 # 设置阿里云alpine apk镜像
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
-
-RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" && \
-  runtime_pkgs="openssl pcre zlib" && \
-  apk --update add ${build_pkgs} ${runtime_pkgs} && \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+  apk --update add \
+  build-base linux-headers openssl-dev pcre-dev wget zlib-dev \
+  openssl pcre zlib && \
   cd /tmp && \
   wget $NGINX_DOWNLOAD_RUL && \
   tar -zxvf $NGINX_VERSION.tar.gz && \

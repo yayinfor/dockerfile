@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # 创建mynet网络
-docker network create mynet
+#docker network create mynet
+#--network mynet --network-alias nginx-net
 
 docker run -d --name nginx-hello -p 80:80 --restart=always \
---network mynet --network-alias nginx-net \
+--link=hello-go:hello-go-net \
 --cpus="1" --memory="512m" --memory-swap="1024m" --oom-kill-disable \
 --mount src=ngx-hello-wwwroot,dst=/nginx/html \
 --mount src=ngx-hello-logs,dst=/nginx/logs \
