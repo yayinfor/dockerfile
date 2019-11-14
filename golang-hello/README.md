@@ -1,4 +1,4 @@
-# golang docker
+# golang-hello docker
 
 ### 1. 首先编写Dockerfile文件内容，用于构建Go应用镜像：
 ```
