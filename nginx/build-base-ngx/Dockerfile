@@ -4,61 +4,51 @@ FROM alpine:3.9
 ENV NGINX_VERSION nginx-1.16.0
 ENV NGINX_DOWNLOAD_RUL http://nginx.org/download/$NGINX_VERSION.tar.gz
 
-# openssl版本和下载地址
-ENV OPENSSL_VERSION openssl-1.1.1b
-ENV OPENSSL_DOWNLOAD_URL https://www.openssl.org/source/$OPENSSL_VERSION.tar.gz
-ENV MYSOFT_DIR /usr/local/mysofts 
-
 # 设置阿里云alpine apk镜像
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-#安装gcc make等非nginx所需的包，可放入虚拟包中，待nginx编译完成再删除虚拟包，减少镜像文件的大小
-RUN apk add --no-cache --virtual mypacks \
-	gcc \
-	libc-dev \
-	make \
-	openssl-dev \
-	zlib-dev \
-	linux-headers \
-	curl \
-	gnupg1 \
-	libxslt-dev \
-	gd-dev \
-	geoip-dev && \ 
-apk add --no-cache \
-	#安装第三方模块所需要的lua
-	bash \
-	pcre-dev \
-	#安装设置时区的包
-	tzdata 
-
-# 安装nginx
-RUN \
-    # 下载nginx安装包
-    mkdir -p $MYSOFT_DIR && \ 
-    cd /tmp && \  
-    wget $NGINX_DOWNLOAD_RUL && \ 
-    tar -zxvf $NGINX_VERSION.tar.gz && \
-
-    # 下载openssl安装包
-    cd /tmp && \ 
-    wget $OPENSSL_DOWNLOAD_URL && \
-    tar -zxvf $OPENSSL_VERSION.tar.gz && \
-
-    # 安装nginx
-    cd /tmp/$NGINX_VERSION && \
-    ./configure --prefix=$MY_SOFTS_DIR/nginx --with-http_v2_module --with-http_stub_status_module --with-http_ssl_module --with-stream --with-openssl=../$OPENSSL_VERSION && \
-    make && \
-    make install && \
-    # 删除虚拟包 
-    apk del mypacks && \
-    # 删除nginx和openssl安装
-    rm -rf /tmp/*
+RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev" && \
+  runtime_pkgs="openssl pcre zlib" && \
+  apk --update add ${build_pkgs} ${runtime_pkgs} && \
+  cd /tmp && \
+  wget $NGINX_DOWNLOAD_RUL && \
+  tar -zxvf $NGINX_VERSION.tar.gz && \
+  cd /tmp/$NGINX_VERSION && \
+  ./configure \
+    --prefix=/usr/local/nginx \
+    --user=nginx \
+    --group=nginx \
+    --with-http_ssl_module \
+    --with-http_realip_module \
+    --with-http_addition_module \
+    --with-http_sub_module \
+    --with-http_dav_module \
+    --with-http_flv_module \
+    --with-http_mp4_module \
+    --with-http_gunzip_module \
+    --with-http_gzip_static_module \
+    --with-http_random_index_module \
+    --with-http_secure_link_module \
+    --with-http_stub_status_module \
+    --with-http_auth_request_module \
+    --with-threads \
+    --with-stream \
+    --with-stream_ssl_module \
+    --with-http_slice_module \
+    --with-mail \
+    --with-mail_ssl_module \
+    --with-file-aio \
+    --with-http_v2_module \
+    --with-ipv6 \
+&& make && \
+   make install && \
+   adduser -D nginx && \
+   rm -rf /tmp/*
 
 # 设置nginx可执行文件到path中
-ENV PATH $MY_SOFTS_DIR/nginx/sbin:$PATH
-WORKDIR $MY_SOFTS_DIR/nginx
+ENV PATH /usr/local/nginx/sbin:$PATH
+WORKDIR /usr/local/nginx
 
-EXPOSE 80
+EXPOSE 80 443
 
 CMD ["nginx", "-g", "daemon off;"]
