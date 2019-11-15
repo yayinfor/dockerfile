@@ -1,4 +1,4 @@
-# nginx docker
+# 构建一个最基础的nginx镜像
 
 ### 1. 编写Dockerfile文件，源码构建nginx镜像
 ```
