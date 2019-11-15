@@ -18,7 +18,7 @@ cd 01_hello-go
 ```
 
 2. 使用nginx源码编译制作base-nginx:v1基础镜像
-```
+```shell
 cd 02_build-base-ngx
 
 #构建base-nginx:v1镜像
@@ -27,7 +27,7 @@ cd 02_build-base-ngx
 ```
 
 3. 基于base-nginx:v1基础镜像制Go项目所需的nginx-hello:v1镜像，nginx-hello镜像中的nginx配置文件做了反向代理Go项目
-```
+```shell
 cd 03_nginx-hello
 
 #构建nginx-hello:v1镜像
