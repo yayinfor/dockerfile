@@ -1,8 +1,8 @@
 # hello-go-nginx
 ### 这是一个docker案例：
 1. 编译Go项目源码，并打包构建Go项目的镜像，然后运行该镜像的容器
-2. 使用nginx源码编译制作base-nginx基础镜像，
-3. 基于base-nginx基础镜像制Go项目所需的nginx-hello镜像，nginx-hello镜像中的nginx配置文件做了反向代理Go项目
+2. 使用nginx源码编译制作base-nginx:v1基础镜像
+3. 基于base-nginx:v1基础镜像制Go项目所需的nginx-hello:v1镜像，nginx-hello:v1镜像中的nginx配置文件做了反向代理Go项目
 4. nginx-hello容器在宿主机上部署web前端项目，查看nginx日志，修改nginx配置文件
 
 ### 如何使用
