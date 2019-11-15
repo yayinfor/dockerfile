@@ -55,9 +55,11 @@ docker image ls
 # 镜像列表中包含名称为nginx-hello:v1的镜像即为构建成功
 ```
 
-### 5. 运行基于nginx-base:v1镜像的容器
+### 5. 编写startup.sh脚本，运行基于nginx-hello:v1镜像的容器
 
 ```
+#!/bin/bash
+
 # 命令参数讲解：
 # docker run: 运行容器
 # -d: 后台运行
@@ -71,42 +73,13 @@ docker image ls
 # nginx-base:v1 镜像名称
 
 # 执行下面命令启动容器
-docker run -d --name nginx-base -p 80:8080 --restart=always \
+docker run -d --name nginx-hello -p 80:80 --restart=always \
+--link=hello-go:hello-go-net \
 --cpus="1" --memory="512m" --memory-swap="1024m" --oom-kill-disable \
-nginx-base:v1
-```
-
-
-
-cd build-base-ngx
-
-// 因为源码安装openssl，安装时间会较长，大概5分钟左右
-./build-base-ngx-image.sh
-
-// 查看构建成功的base-nginx镜像
-docker image ls
-
-// 如何构建镜像可查看当前目录中的Dockerfile文件和./build-base-ngx-image.sh文件的内容
-```
-
-### 2. 在base-nginx:v1基础镜像上构建用于某个项目的nginx镜像
-```
-cd build-project-ngx
-
-// 把nginx.conf里面的配置内容改为你项目需要的配置
-vim nginx.conf 
-// 修改配置内容...
-
-// 我这里的项目叫epark, 开始构建项目所需的nginx镜像
-// 可以将build-epark-ngx-image.sh中的nginx-epark改为你自己项目的名字
-./build-epark-ngx-image.sh
-
-// 查看构建成功的nginx-epark镜像
-docker image ls
-
-// nginx-epark和base-nginx不同的地方就是nginx.conf根据项目的需求做了配置
-
-// 如何构建镜像可查看当前目录中的Dockerfile文件和./build-epark-ngx-image.sh文件的内容
+--mount src=ngx-hello-wwwroot,dst=/nginx/html \
+--mount src=ngx-hello-logs,dst=/nginx/logs \
+--mount src=ngx-hello-conf,dst=/nginx/conf \
+nginx-hello:v1
 ```
 
 ### 3. 运行nginx-epark:v1镜像的容器
