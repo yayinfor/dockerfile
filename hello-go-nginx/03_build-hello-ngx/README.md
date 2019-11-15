@@ -79,54 +79,55 @@ docker run -d --name nginx-hello -p 80:80 --restart=always \
 --mount src=ngx-hello-logs,dst=/nginx/logs \
 --mount src=ngx-hello-conf,dst=/nginx/conf \
 nginx-hello:v1
+
+#部署：复制index.html文件到数据卷ngx-hello-wwwroot宿主机目录
+cp -rf index.html /var/lib/docker/volumes/ngx-hello-wwwroot/_data
 ```
 
-### 3. 运行nginx-epark:v1镜像的容器
+### 6. 运行nginx-hello:v1镜像的容器
 ```
-cd startup-project-ngx
-
 // 运行容器
-./start-nginx.sh
+./startup.sh
 
-// 查看nginx-epark容器
+// 查看nginx-hello
 docker ps
 
 浏览器打开http://localhost
 
-// 如何运行容器请查看当前目录中start-nginx.sh的内容
 ```
 
-### 4. 部署项目和查看日志
+### 7. 部署项目和查看日志
 
 ```
-// 查看start-nginx.sh源码内容
+// 查看startup.sh源码内容
 #!/bin/bash
 
-docker run -d --name nginx-epark -p 80:80 --restart=always \
+docker run -d --name nginx-hello -p 80:80 --restart=always \
+--link=hello-go:hello-go-net \
 --cpus="1" --memory="512m" --memory-swap="1024m" --oom-kill-disable \
---mount src=ngx-epark-wwwroot,dst=/nginx/html \
---mount src=ngx-epark-logs,dst=/nginx/logs \
---mount src=ngx-epark-conf,dst=/nginx/conf \
-nginx-epark:v1
+--mount src=ngx-hello-wwwroot,dst=/nginx/html \
+--mount src=ngx-hello-logs,dst=/nginx/logs \
+--mount src=ngx-hello-conf,dst=/nginx/conf \
+nginx-hello:v1
 
-#部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
-cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
+#部署：复制index.html文件到数据卷ngx-hello-wwwroot宿主机目录
+cp -rf index.html /var/lib/docker/volumes/ngx-hello-wwwroot/_data
 
 
 从以上代码我们知道  
-1. 挂载容器目录/nginx/html对应宿主机数据卷ngx-epark-wwwroot // 该目录存放着nginx web项目文件  
-2. 挂载容器目录/nginx/logs对应宿主机数据卷ngx-epark-logs // 该目录存放着nginx日志文件  
-3. 挂载容器目录/nginx/conf对应宿主机数据卷ngx-epark-conf // 该目录存放着nginx配置文件 
+1. 挂载容器目录/nginx/html对应宿主机数据卷ngx-hello-wwwroot // 该目录存放着nginx web项目文件  
+2. 挂载容器目录/nginx/logs对应宿主机数据卷ngx-hello-logs // 该目录存放着nginx日志文件  
+3. 挂载容器目录/nginx/conf对应宿主机数据卷ngx-hello-conf // 该目录存放着nginx配置文件 
 ```
 
-执行docker inspect nginx-epark, 从输出内容中找到Mounts信息如下：
+执行docker inspect nginx-hello, 从输出内容中找到Mounts信息如下：
 
 ```
 "Mounts": [
     {
         "Type": "volume",
-        "Name": "ngx-epark-wwwroot",
-        "Source": "/var/lib/docker/volumes/ngx-epark-wwwroot/_data",
+        "Name": "ngx-hello-wwwroot",
+        "Source": "/var/lib/docker/volumes/ngx-hello-wwwroot/_data",
         "Destination": "/nginx/html",
         "Driver": "local",
         "Mode": "z",
@@ -135,8 +136,8 @@ cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
     },
     {
         "Type": "volume",
-        "Name": "ngx-epark-logs",
-        "Source": "/var/lib/docker/volumes/ngx-epark-logs/_data",
+        "Name": "ngx-hello-logs",
+        "Source": "/var/lib/docker/volumes/ngx-hello-logs/_data",
         "Destination": "/nginx/logs",
         "Driver": "local",
         "Mode": "z",
@@ -147,29 +148,25 @@ cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
 ```
 
 上面有2个Volume数据卷，  
-通过Name为ngx-epark-wwwroot可以看出：  
-宿主机目录在：/var/lib/docker/volumes/ngx-epark-wwwroot/_data  
+通过Name为ngx-hello-wwwroot可以看出：  
+宿主机目录在：/var/lib/docker/volumes/ngx-hello-wwwroot/_data 
 容器目录在：/nignx/html  
 
 通过Name为ngx-epark-logs可以看出：  
-宿主机目录在：/var/lib/docker/volumes/ngx-epark-logs/_data  
+宿主机目录在：/var/lib/docker/volumes/ngx-hello-logs/_data 
 容器目录在：/nginx/logs
 
 #### 部署项目：  
-只需要把项目文件拷贝到/var/lib/docker/volumes/ngx-epark-wwwroot/_data即可完成部署，  
+只需要把项目文件拷贝到/var/lib/docker/volumes/ngx-hello-wwwroot/_data即可完成部署， 
 此时容器目录/nignx/html中也会有最新部署的项目文件
 
-可查看start-nginx.sh中如下代码片段，即为部署项目的方式
+可查看startup.sh中如下代码片段，即为部署项目的方式
 ```
-#部署：复制index.html文件到数据卷ngx-epark-wwwroot宿主机目录
-cp -rf index.html /var/lib/docker/volumes/ngx-epark-wwwroot/_data
+#部署：复制index.html文件到数据卷ngx-hello-wwwroot宿主机目录
+cp -rf index.html /var/lib/docker/volumes/ngx-hello-wwwroot/_data
 ```
 
-#### 查看日志：  
-ls /var/nignx的lib/docker/volumes/ngx-epark-logs/_data即可看到里面有nignx的日志文件
-
-
-
-
+#### 查看日志： 
+ls /var/nignx的lib/docker/volumes/ngx-hello-logs/_data即可看到里面有nignx的日志文件
 
  
