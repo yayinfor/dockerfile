@@ -60,19 +60,22 @@ EXPOSE 80 443
 
 # 运行容器时执行nginx运行命令，daemon off;是禁止后台运行，
 # 容器内的应用必须前台运行，否则容器启动后会立即退出
-CMD ["nginx", "-g", "daemon off;"]```
+CMD ["nginx", "-g", "daemon off;"]
 ```
 
-### 2. 编写build-base-ngx-image.sh文件，构建base-nginx:v1镜像
+### 2. 编写build-base-ngx-image.sh文件，用于构建base-nginx:v1镜像
 ```
 #!/bin/bash
 
 # 构建base-nginx:v1镜像
 docker build -t base-nginx:v1 -f Dockerfile .
 ```
-### 3. 查看镜像是否构建成功
+### 3. 构建镜像并查看镜像是否构建成功
 
 ```
+# 构建镜像
+./build-base-ngx-image.sh
+
 #查看构建成功的base-nginx镜像
 docker image ls
 
@@ -82,7 +85,7 @@ docker image ls
 ### 4. 运行基于nginx-base:v1镜像的容器
 
 ```
-# 执行下面命令启动容器，
+# 命令参数讲解：
 # docker run: 运行容器
 # -d: 后台运行
 # --name nginx-base: 是指定容器名称为nginx-base
@@ -93,6 +96,7 @@ docker image ls
 # --memory-swap="1024m": 当容器内存不足时，最大可扩容到1024m, 宿主机会再分配512m给容器
 # --oom-kill-disable: 内存不足时禁止杀掉容器
 
+# 执行下面命令启动容器
 docker run -d --name nginx-base -p 80:8080 --restart=always \
 --cpus="1" --memory="512m" --memory-swap="1024m" --oom-kill-disable \
 nginx-base:v1
