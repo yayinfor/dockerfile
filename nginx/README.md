@@ -91,7 +91,7 @@ docker image ls
 # --cpus="1": 分配CPU的核心数
 # --memory="512m": 分配内存为512m
 # --memory-swap="1024m": 当容器内存不足时，最大可扩容到1024m, 宿主机会再分配512m给容器
-# --oom-kill-disable: 
+# --oom-kill-disable: 内存不足时禁止杀掉容器
 
 docker run -d --name nginx-base -p 80:8080 --restart=always \
 --cpus="1" --memory="512m" --memory-swap="1024m" --oom-kill-disable \
