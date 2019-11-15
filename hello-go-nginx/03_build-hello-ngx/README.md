@@ -5,15 +5,14 @@
 server {
     listen       80;
     server_name  localhost;
-    #charset koi8-r;
-    # 主要修改了这里
+    
+    # 修改了如下代码，用于反向代理hello-go的web服务
     location / {
       proxy_pass http://hello-go-net:8080;
     }
     ...
 }
 
-// 修改了如下位置，用于反向代理hello-go的web服务
 // 这里hello-go-net是hello-go容器的网络映射名称，类似IP的别名
 location / {
   proxy_pass http://hello-go-net:8080;
