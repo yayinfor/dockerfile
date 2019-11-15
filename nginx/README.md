@@ -63,7 +63,7 @@ EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-### 2. 编写build-base-ngx-image.sh文件，用于构建base-nginx:v1基础镜像，改镜像用于具体项目的基础镜像
+### 2. 编写build-base-ngx-image.sh文件，用于构建base-nginx:v1基础镜像，该镜像用于具体项目的基础镜像
 ```
 #!/bin/bash
 
