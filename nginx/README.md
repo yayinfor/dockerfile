@@ -1,6 +1,6 @@
 # nginx docker
 
-### 1. 编写Dockerfile文件，源码构建nginx基础镜像，用于具体项目的基础镜像
+### 1. 编写Dockerfile文件，源码构建nginx镜像
 ```
 # 基础镜像使用alpine，只有几M，不要使用centos
 FROM alpine:3.9
@@ -63,7 +63,7 @@ EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-### 2. 编写build-base-ngx-image.sh文件，用于构建base-nginx:v1镜像
+### 2. 编写build-base-ngx-image.sh文件，用于构建base-nginx:v1基础镜像，改镜像用于具体项目的基础镜像
 ```
 #!/bin/bash
 
@@ -95,6 +95,7 @@ docker image ls
 # --memory="512m": 分配内存为512m
 # --memory-swap="1024m": 当容器内存不足时，最大可扩容到1024m, 宿主机会再分配512m给容器
 # --oom-kill-disable: 内存不足时禁止杀掉容器
+# nginx-base:v1 镜像名称
 
 # 执行下面命令启动容器
 docker run -d --name nginx-base -p 80:8080 --restart=always \
