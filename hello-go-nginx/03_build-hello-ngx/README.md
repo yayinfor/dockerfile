@@ -1,4 +1,4 @@
-# 基于nginx-base:v1镜像构建用于hello-go项目的nginx镜像
+## 基于nginx-base:v1镜像构建用于hello-go项目的nginx镜像
 
 ### 1. 修改nginx.conf配置文件：
 ```
