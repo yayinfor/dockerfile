@@ -54,7 +54,7 @@ docker image ls
 # 镜像列表中包含名称为nginx-hello:v1的镜像即为构建成功
 ```
 
-### 5. 编写startup.sh脚本，运行基于nginx-hello:v1镜像的容器
+### 5. 编写start-nginx.sh脚本，运行基于nginx-hello:v1镜像的容器
 
 ```
 #!/bin/bash
@@ -87,7 +87,7 @@ cp -rf index.html /var/lib/docker/volumes/ngx-hello-wwwroot/_data
 ### 6. 运行nginx-hello:v1镜像的容器
 ```
 // 运行容器
-./startup.sh
+./start-nginx.sh
 
 // 查看nginx-hello
 docker ps
@@ -99,7 +99,7 @@ docker ps
 ### 7. 部署项目和查看日志
 
 ```
-// 查看startup.sh源码内容
+// 查看start-nginx.sh源码内容
 #!/bin/bash
 
 docker run -d --name nginx-hello -p 80:80 --restart=always \
@@ -160,7 +160,7 @@ cp -rf index.html /var/lib/docker/volumes/ngx-hello-wwwroot/_data
 只需要把项目文件拷贝到/var/lib/docker/volumes/ngx-hello-wwwroot/_data即可完成部署， 
 此时容器目录/nignx/html中也会有最新部署的项目文件
 
-可查看startup.sh中如下代码片段，即为部署项目的方式
+可查看start-nginx.sh中如下代码片段，即为部署项目的方式
 ```
 #部署：复制index.html文件到数据卷ngx-hello-wwwroot宿主机目录
 cp -rf index.html /var/lib/docker/volumes/ngx-hello-wwwroot/_data
